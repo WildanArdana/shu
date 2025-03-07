@@ -17,28 +17,16 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'nama_anggota' => 'required|string',
             'no_anggota' => 'required|string',
         ]);
 
-        $nama_input = strtolower(trim($request->input('nama_anggota')));
         $no_anggota = strtolower(trim($request->input('no_anggota')));
 
         // Cek admin berdasarkan nama depan atau nama lengkap dan no anggota
-        $admin = User::whereRaw("LOWER(TRIM(no_anggota)) = ?", [$no_anggota])
-                    ->where(function ($query) use ($nama_input) {
-                        $query->whereRaw("LOWER(TRIM(nama_anggota)) LIKE ?", ["$nama_input%"])
-                              ->orWhereRaw("LOWER(TRIM(nama_anggota)) = ?", [$nama_input]);
-                    })
-                    ->first();
-        
+        $admin = User::whereRaw("LOWER(TRIM(no_anggota)) = ?", [$no_anggota])->first();
+
         // Cek anggota berdasarkan nama depan atau nama lengkap dan no anggota
-        $anggota = Shu::whereRaw("LOWER(TRIM(no_anggota)) = ?", [$no_anggota])
-                    ->where(function ($query) use ($nama_input) {
-                        $query->whereRaw("LOWER(TRIM(nama_anggota)) LIKE ?", ["$nama_input%"])
-                              ->orWhereRaw("LOWER(TRIM(nama_anggota)) = ?", [$nama_input]);
-                    })
-                    ->first();
+        $anggota = Shu::whereRaw("LOWER(TRIM(no_anggota)) = ?", [$no_anggota])->first();
 
         if ($admin) {
             Auth::guard('admin')->login($admin);

@@ -54,10 +54,6 @@
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="mb-3">
-                                <label class="form-label">Nama Anggota</label>
-                                <input type="text" name="nama_anggota" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
                                 <label class="form-label">No Anggota</label>
                                 <input type="text" name="no_anggota" class="form-control" required>
                             </div>
